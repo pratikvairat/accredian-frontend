@@ -1,6 +1,6 @@
 
-import { Box, Button, FormControl, FormControlLabel, TextField } from '@mui/material';
-import { FaUserAlt } from "react-icons/fa"
+import { Box, Button, FormControl, Link, TextField } from '@mui/material';
+
 import React from 'react'
 
 
@@ -15,8 +15,9 @@ function Login() {
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
+                marginTop="10px"
             >
-                <form>
+                <form onSubmit={handleSubmit}>
                     <FormControl>
                         <TextField
                             required
@@ -33,16 +34,24 @@ function Login() {
                             defaultValue=""
                             margin="dense"
                         />
-                        <Box 
+                        <Box
                             justifyContent="center"
                             alignItems="center"
                             display='flex'
                             flexDirection='row'
                         >
-                            
-                            <Button variant="contained" margin="dense">Login</Button>
+                            <Box
+                                display="flex"
+                                flexDirection='column'
+                                marginTop='10px'
+                            >
+                                <Button variant="contained" margin="dense" type="submit">Login</Button>
+                                <Box display="flex">
+                                    <Link marginTop="10px">New user ? Register Here</Link>
+                                    <Link marginTop="10px" marginLeft="25px">Forgot Password ? Reset</Link>
+                                </Box>
+                            </Box>
                         </Box>
-                      
                     </FormControl>
                 </form>
             </Box>
