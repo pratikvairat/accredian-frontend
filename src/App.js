@@ -6,11 +6,7 @@ import UserProfiles from './components/UserProfiles';
 
 function App() {
   return (
-    
       <UserProfiles/>
-    
-    
-   
   );
 }
 

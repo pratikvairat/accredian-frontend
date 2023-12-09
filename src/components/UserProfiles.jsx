@@ -1,8 +1,11 @@
 import React from 'react'
 import { FaUserAlt } from 'react-icons/fa'
-import Login from './Login'
+
 import { Box } from '@mui/material'
 import Register from './Register'
+import Profiles from './Profiles'
+import Login from './Login'
+import { Route, Routes } from 'react-router'
 function UserProfiles() {
     return (
         <Box
@@ -13,7 +16,12 @@ function UserProfiles() {
             flexDirection="column"
         >
             <FaUserAlt size={50} color="blue"/>
-            <Register/>
+
+            <Routes>
+                <Route index path='/' Component={Login}></Route>
+                <Route path='/register' Component={Register}></Route>
+                <Route path='/profiles' Component={Profiles}></Route>
+            </Routes>
         </Box>
     )
 }

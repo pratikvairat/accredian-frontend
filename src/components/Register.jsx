@@ -1,14 +1,44 @@
 import { Box, FormControl, TextField, Button, Link } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { API } from '../routes/api';
+import axios from 'axios';
 
 function Register() {
+  const [username,setUsername]=useState('');
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState('');
+  const [confirmPassword,setConfirmPassword]=useState('');
+  const [token,setToken]=useState(localStorage.getItem('token')||'');
+  const navigate=useNavigate();
+
+  const handleRegister = () => {
+    console.log(API.BASE_URL)
+    axios.post(`${API.BASE_URL}/register`, { username, password, email })
+      .then((response) => {
+        console.log(response.data.message);
+      })
+      .catch((error) => {
+        console.error(error.response.data.message);
+      });
+  };
+
+  useEffect(()=>{
+    if(token){
+      navigate('/profiles')
+    }
+  },[token]);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+};
   return (
     <Box
       display='flex'
       flexDirection='column'
       marginTop='10px'
     >
-      <form>
+      <form onSubmit={handleSubmit}> 
         <FormControl
           display='flex'
           flexDirection='column'>
@@ -18,6 +48,7 @@ function Register() {
             label="User name"
             defaultValue=""
             margin="dense"
+            onChange={(e)=>setUsername(e.target.value)}
           />
           <TextField
             required
@@ -25,6 +56,8 @@ function Register() {
             label="Email"
             defaultValue=""
             margin="dense"
+            onChange={(e) => setEmail(e.target.value)}
+
           />
           <TextField
             required
@@ -32,6 +65,7 @@ function Register() {
             label="Password"
             defaultValue=""
             margin="dense"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
             required
@@ -39,16 +73,17 @@ function Register() {
             label="Confirm password"
             defaultValue=""
             margin="dense"
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <Box
             display="flex"
             flexDirection='column'
             marginTop='10px'
           >
-            <Button variant="contained" margin="dense" type="submit">Register</Button>
+            <Button variant="contained" margin="dense" type="submit" onClick={handleRegister}>Register</Button>
             <Box display="flex">
-              <Link marginTop="15px">Already registered ? Login Here</Link>
-              <Link marginTop="15px" marginLeft="25px">Forgot Password ? Reset</Link>
+              <Link marginTop="15px" marginX='70px'><a href='/'>Registered ? Login Here</a></Link>
+             
             </Box>
           </Box>
         </FormControl>
