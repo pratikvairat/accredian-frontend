@@ -1,27 +1,31 @@
 
-import { Box, Button, FormControl, Link, TextField } from '@mui/material';
+import { Box, Button, FormControl, Link, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react'
 import { API } from '../routes/api';
 import axios from 'axios';
-import { redirect } from 'react-router';
+import { useNavigate } from 'react-router';
 
 
 function Login() {
     const [password,setPassword]=useState('');
     const [username,setUsername]=useState('');
     const [token,setToken]=useState(localStorage.getItem('token')||'');
-    
+    const [guideText,setGuideText]=useState('');
+    const navigate=useNavigate(); 
+
     const handleLogin = () => {
+        setGuideText('');
         axios.post(`${API.BASE_URL}/login`, { username, password })
           .then((response) => {
             console.log(response)
             const token = response.data.token;
             setToken(token);
-            
+            setGuideText({'message':'Login successful. Redirecting...','textColor':'blue'});
             localStorage.setItem('token', token);
+            navigate('/profiles')
           })
           .catch((error) => {
-            
+            setGuideText({'message':error.response.data.message,'textColor':'red'});
             console.error(error.response.data.message);
           });
     };
@@ -40,6 +44,7 @@ function Login() {
             >
                 <form onSubmit={handleSubmit}>
                     <FormControl>
+                        <Typography textAlign='center' color={guideText.textColor}>{guideText.message}</Typography>
                         <TextField
                             required
                             id="outlined-required"

@@ -1,12 +1,15 @@
 import { Box, Typography, Button } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 function Profiles() {
+    const [profile,setProfile]=useState(null);
     const navigate=useNavigate();
     
     useEffect(()=>{
         if(!localStorage.getItem('token')){
             navigate('/')
+        }else{
+
         }
     },[])
     const onLogout=()=>{
