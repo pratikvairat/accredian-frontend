@@ -1,4 +1,4 @@
-import { Box, FormControl, TextField, Button, Link } from '@mui/material'
+import { Box, FormControl, TextField, Button, Link, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { API } from '../routes/api';
@@ -9,25 +9,32 @@ function Register() {
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
   const [confirmPassword,setConfirmPassword]=useState('');
-  const [token,setToken]=useState(localStorage.getItem('token')||'');
+  const token=localStorage.getItem('token');
+  const [guideText,setGuideText]=useState('');
   const navigate=useNavigate();
 
   const handleRegister = () => {
-    console.log(API.BASE_URL)
+    if(confirmPassword===password){
+      setGuideText('');
     axios.post(`${API.BASE_URL}/register`, { username, password, email })
       .then((response) => {
-        console.log(response.data.message);
+        setGuideText({'message':`${response.data.message} Login Now...`,'textColor':'blue'});
       })
       .catch((error) => {
-        console.error(error.response.data.message);
+        setGuideText({'message':error.response.data.message,'textColor':'red'});
+        console.error(error.response);
       });
+    }else{
+      setGuideText({'message':'Confirm password and password not matched','textColor':'red'});
+    }
   };
 
   useEffect(()=>{
     if(token){
-      navigate('/profiles')
+      navigate('/profiles');
     }
-  },[token]);
+  },[token,navigate]);
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -42,6 +49,7 @@ function Register() {
         <FormControl
           display='flex'
           flexDirection='column'>
+          <Typography textAlign='center' color={guideText.textColor}>{guideText.message}</Typography>
           <TextField
             required
             id="outlined-required"
@@ -53,6 +61,7 @@ function Register() {
           <TextField
             required
             id="outlined-required"
+            type ='email'
             label="Email"
             defaultValue=""
             margin="dense"
@@ -62,6 +71,7 @@ function Register() {
           <TextField
             required
             id="outlined-required"
+            type='password'
             label="Password"
             defaultValue=""
             margin="dense"
@@ -70,6 +80,7 @@ function Register() {
           <TextField
             required
             id="outlined-required"
+            type='password'
             label="Confirm password"
             defaultValue=""
             margin="dense"
